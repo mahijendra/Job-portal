@@ -16,7 +16,7 @@ This example requires some changes to your config:
     */
 
 import {Popover} from '@headlessui/react'
-import '../../styles/landingpage.css'
+import '../styles/landingpage.css'
 import {useHistory} from "react-router-dom";
 
 
@@ -41,18 +41,6 @@ export default function LandingPage() {
                                     <span
                                         className="text-2xl font-bold block text-blue-500 xl:inline tracking-wide">Jobs</span>
                                 </div>
-
-                                {/* Right section on desktop */}
-                                {/* <div className="hidden lg:ml-4 lg:flex lg:items-center lg:pr-0.5">
-                                    <Menu as="div" className="ml-4 relative flex-shrink-0">
-                                        <button
-                                            type="button"
-                                            className=" tracking-wide inline-flex items-center px-4 py-2 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-blue-300 bg-opacity-10 focus:outline-none border border-blue-600"
-                                        >
-                                            Login/Signup
-                                        </button>
-                                    </Menu>
-                                </div>*/}
                             </div>
                             <div className="hidden lg:block border-t border-white border-opacity-20 py-5"></div>
                         </div>
@@ -60,74 +48,46 @@ export default function LandingPage() {
                 )}
             </Popover>
 
-            <main className="-mt-40 flex justify-center items-center">
-                <div className="max-w-xl mx-auto px-4 sm:px-6 lg:px-8 ">
+            <main className="-mt-48 flex justify-center items-center">
+                <div className="max-w-xl mx-auto px-4 sm:px-6 lg:px-8">
                     {/* Replace with your content */}
                     <div className="bg-white rounded-lg shadow px-5 py-6 sm:px-6">
                         <div className=" rounded-lg h-80">
                             <form className="space-y-6" action="#" method="POST">
                                 <div className="text-md tracking-wide p-0">
-                                    Login
+                                    Forgot Password
                                 </div>
+                                <div>
+                                    <p className="font-light text-sm">
+                                        Enter the  email associated with your account and we'll send you instructions to reset your password.
+                                    </p>
+                                </div>
+
                                 <div>
                                     <label htmlFor="email" className="block text-sm font-medium text-gray-700">
                                         Email address
                                     </label>
                                     <div className="mt-1">
                                         <input
-                                            placeholder="Enter your Email"
+                                            placeholder="Enter you email"
                                             id="email"
                                             name="email"
                                             type="email"
+                                            autoComplete="email"
                                             required
                                             className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                                         />
                                     </div>
                                 </div>
 
-                                <div>
-                                    <div className="flex flex-row gap-60">
-                                        <label htmlFor="password" className="block text-sm font-medium text-gray-700">
-                                            Password
-                                        </label>
-                                        <div className="text-sm">
-                                            <span onClick={() => {
-                                                history.push('/forgotPassword')
-                                            }}
-                                                  className="font-medium text-blue-500">
-                                                Forgot your password?
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <div className="mt-1">
-                                        <input
-                                            placeholder="Enter your password"
-                                            id="password"
-                                            name="password"
-                                            type="password"
-                                            required
-                                            className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                                        />
-                                    </div>
-                                </div>
                                 <div className='flex flex-col gap-8 justify-center items-center'>
                                     <button
                                         type="submit"
                                         className="w-2xl px-8 mt-4 flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-500 hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                                     >
-                                        Log in
+                                        Submit
                                     </button>
 
-                                    <div>
-                                        <p>
-                                            New to MyJobs?{" "}
-                                            <span
-                                                onClick={() => {
-                                                    history.push('/signUp')
-                                                }}
-                                                className='text-blue-500 cursor-pointer'>Create an account</span>
-                                        </p>
-                                    </div>
                                 </div>
                             </form>
 

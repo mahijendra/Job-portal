@@ -16,7 +16,7 @@ This example requires some changes to your config:
     */
 
 import {Menu, Popover} from '@headlessui/react'
-import '../styles/landingpage.css'
+import '../../styles/landingpage.css'
 import {useHistory} from "react-router-dom";
 
 
