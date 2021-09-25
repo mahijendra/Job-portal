@@ -1,10 +1,11 @@
 .paginationBttns{
+    position:relative;
     width: 80%;
     height: 40%;
     list-style: none;
     display:flex;
     justify-content:center;
-
+    align-items: center;
 }
 
 .paginationBttns a{

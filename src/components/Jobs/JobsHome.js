@@ -1,24 +1,115 @@
 import {Fragment} from 'react'
 import {Menu, Popover, Transition} from '@headlessui/react'
-import {ChevronDownIcon, PencilAltIcon, MenuIcon, XIcon} from '@heroicons/react/outline'
+import {ChevronDownIcon, HomeIcon, LocationMarkerIcon, MenuIcon, XIcon} from '@heroicons/react/outline'
 import {useHistory} from "react-router-dom";
+import ReactPaginate from "react-paginate"
+import {useState} from 'react'
+import jobsData from "./MOCK_DATA.json"
+import "../../styles/pagination.css"
 
 const user = {
     imageUrl:
         'http://dummyimage.com/100x100.png/5fa2dd/ffffff',
 }
 
+
+const people = [
+    {
+        job: 'UI / UX Designer',
+        description: 'Lorem Ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incidunt...',
+        location: 'Bengaluru',
+        button: '',
+    },
+    {
+        job: 'Front-End Designer ',
+        description: 'Lorem Ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incidunt...',
+        location: 'Hyderabad',
+        button: '',
+    },
+    {
+        job: 'Java Developer',
+        description: 'Lorem Ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incidunt...',
+        location: 'Gurgaon',
+        button: '',
+    },
+]
+
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
 }
 
 
-export default function PostJob() {
-    let history = useHistory();
+export default function JobsHome() {
 
+    const [users, setUsers] = useState(jobsData.slice(0, 50));
+    const [pageNumber, setPageNumber] = useState(0);
+
+
+    const usersPerPage = 3;
+
+    const pagesVisited = pageNumber * usersPerPage;
+
+    const displayUsers = users
+        .slice(pagesVisited, pagesVisited + usersPerPage)
+        .map((job, id) => {
+            return (
+                <>
+                    <li key={job.id}
+                        className="col-span-1 bg-white rounded-lg shadow flex flex-col">
+                        <div className="w-full flex items-center justify-between p-6 space-x-6">
+                            <div className="flex-1 truncate">
+                                <div className="flex items-center space-x-3">
+                                    <h3 className="text-gray-900 text-lg font-medium truncate">{job.jobTitle}</h3>
+                                </div>
+                                <p className="mt-1 text-gray-500 text-sm truncate">{job.description}</p>
+                            </div>
+                        </div>
+
+                        <div className="flex flex-row justify-between items-center lg:gap-x-12">
+                            <div className="w-xl flex mx-14">
+                                <a
+                                    href="/"
+                                    className="relative w-0 flex-1 inline-flex items-center justify-center py-4 text-sm text-gray-700 font-medium border border-transparent rounded-bl-lg hover:text-gray-500"
+                                >
+                                    <LocationMarkerIcon className="w-5 h-5 text-gray-400 flex-shrink-0 text-gray-400 mr-1"
+                                                        aria-hidden="true"/>
+                                    <span className="">{job.location}</span>
+                                </a>
+                            </div>
+                            <div className=" w-0 flex-1 flex">
+                                <a
+                                    href="/"
+                                    className="relative w-0 flex-1 inline-flex items-center justify-center py-4 text-sm text-gray-700 font-medium border border-transparent rounded-br-lg hover:text-gray-500"
+                                >
+                                    <div
+                                        className='flex flex-col justify-center items-center'>
+                                        <button
+
+                                            type="submit"
+                                            className="w-2xl px-2 flex justify-center py-2 px-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-500 hover:bg-blue-500 focus:outline-none"
+                                        >
+                                            View Application
+                                        </button>
+
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </li>
+                </>
+            );
+        });
+
+    const pageCount = Math.ceil(users.length / usersPerPage);
+
+    const changePage = ({selected}) => {
+        setPageNumber(selected);
+    };
+
+    let history = useHistory();
     return (
         <div className="min-h-screen bg-gray-100 font-open-sans">
-            <Popover as="header" className=" background pb-12 bg-indigo-600 h-av">
+            <Popover as="header" className=" background pb-12 bg-indigo-600 h-md">
                 {({open}) => (
                     <>
                         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:max-w-7xl lg:px-8">
@@ -57,7 +148,6 @@ export default function PostJob() {
                                                         <span className="sr-only">Open user menu</span>
                                                         <ChevronDownIcon className="-mr-1 ml-2 h-5 w-5 pt-1" aria-hidden="true"/>
                                                     </Menu.Button>
-
                                                 </div>
                                                 <Transition
                                                     as={Fragment}
@@ -190,24 +280,58 @@ export default function PostJob() {
                             </div>
                         </Transition.Root>
 
-                        <div className="flex flex-col items-center justify-center gap-4 mt-96">
-                            <PencilAltIcon className="w-12 h-12"></PencilAltIcon>
-                            <p className="">Your posted jobs will show here </p>
-                            <button
-                                onClick={() => {
-                                    history.push('/postJobForm')
-                                }}
-                                type="submit"
-                                className="w-2xl px-8 mt-4 flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-500 hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                            >
-                                Post a Job
-                            </button>
-                        </div>
+                        <header className="py-1">
+                            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                                <div className='flex flex-col pt-6'>
+                                    <div className="w-24 flex ml-2">
+                                        <a
+                                            href="/"
+                                            className="relative -mr-px w-0 flex-1 inline-flex items-center justify-center py-4 text-sm text-gray-700 font-medium border border-transparent rounded-bl-lg hover:text-gray-500"
+                                        >
+                                            <HomeIcon className="w-5 h-5 text-gray-400" aria-hidden="true"/>
+                                            <span
+                                                className="ml-1 text-white text-md text-gray-200 tracking-wide">Home</span>
+                                        </a>
+                                    </div>
+                                    <div className="w-72 flex ml-6">
+                                        <p className="text-2xl text-gray-200 tracking-wide">
+                                            Jobs posted by you
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </header>
 
                     </>
                 )}
             </Popover>
 
+            {/*Jobs List*/}
+            <main className="-mt-32 pr-12">
+                <div className="max-w-7xl mx-auto pb-12 px-4 sm:px-6 lg:px-8">
+                    {/* Replace with your content */}
+                    <div className="rounded-lg px-5 py-6 sm:px-6 ">
+                        <div className="h-sm rounded-lg">
+                            <ul className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                                {displayUsers}
+                            </ul>
+
+                        </div>
+                    </div>
+                    {/* /End replace */}
+                </div>
+            </main>
+
+
+                <ReactPaginate previousLabel={'<'} nextLabel={'>'} pageCount={pageCount} marginPagesDisplayed={1}
+                               onPageChange={changePage}
+                               containerClassName={"paginationBttns"}
+                               previousLinkClassName={"previousBttn"}
+                               nextLinkClassName={"nextBttn"}
+                               disabledClassName={"paginationDisabled"}
+                               activeClassName={"paginationActive"}/>
         </div>
     )
 }
+
+

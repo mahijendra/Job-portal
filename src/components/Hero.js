@@ -1,10 +1,32 @@
 import {Fragment} from 'react'
-import {Popover, Transition} from '@headlessui/react'
-import {MenuIcon, XIcon} from '@heroicons/react/outline'
+import {Menu, Popover, Transition} from '@headlessui/react'
+import {BellIcon, MenuIcon, XIcon} from '@heroicons/react/outline'
 import {useHistory} from "react-router-dom";
 
+const people = [
+    {
+        name: 'Get More',
+        name2: 'Visibility',
+        bio:
+            'Ultricies massa malesuada viverra cras lobortis. Tempor orci hac ligula dapibus mauris sit ut eu. ',
 
-export default function Login() {
+    },
+    {
+        name: 'Organize Your',
+        name2: 'Candidates',
+        bio:
+            'Ultricies massa malesuada viverra cras lobortis. Tempor orci hac ligula dapibus mauris sit ut eu. ',
+
+    },
+    {
+        name: 'Verify Their ',
+        name2: 'Abilities',
+        bio: 'Ultricies massa malesuada viverra cras lobortis. Tempor orci hac ligula dapibus mauris sit ut eu. ',
+    },
+
+]
+
+export default function Example() {
     let history = useHistory();
 
     return (
@@ -17,12 +39,13 @@ export default function Login() {
                                 {/* Logo */}
                                 <div
                                     onClick={() => {
-                                        history.push('/hero')
+                                        history.push('/landingPage')
                                     }}
-                                    className="max-w-xl absolute left-0 flex-shrink-0 lg:static mt-2">
-                                    <p className="lg:text-2xl font-bold block xl:inline text-white tracking-wide font-open-sans ">My
-                                        <p className="lg:text-2xl font-bold block text-blue-500 xl:inline tracking-wide font-open-sans">Jobs</p>
-                                    </p>
+                                    className="max-w-3xl absolute left-0 flex-shrink-0 lg:static mt-2">
+                                    <span
+                                        className="lg:text-2xl font-bold block xl:inline text-white tracking-wide ">My</span>
+                                    <span
+                                        className="lg:text-2xl font-bold block text-blue-500 xl:inline tracking-wide">Jobs</span>
                                 </div>
 
                                 {/* Right section on desktop */}
@@ -128,80 +151,116 @@ export default function Login() {
                     </>
                 )}
             </Popover>
-
-            <div className="-mt-40 flex justify-center items-center sm:mx-auto max-w-xl px-4 sm:px-6 lg:px-8 font-open-sans">
-                {/* Replace with your content */}
-                <div className="bg-white rounded-lg shadow px-5 py-6 sm:px-6 sm:mx-auto sm:w-full sm:max-w-md">
-                    <div className=" rounded-lg h-80">
-                        <form className="space-y-6" action="#" method="POST">
-                            <div className="text-md tracking-wide p-0">
-                                Login
-                            </div>
-                            <div>
-                                <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-                                    Email address
-                                </label>
-                                <div className="mt-1">
-                                    <input
-                                        placeholder="Enter your Email"
-                                        id="email"
-                                        name="email"
-                                        type="email"
-                                        required
-                                        className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                                    />
-                                </div>
-                            </div>
-
-                            <div>
-                                <div className="flex flex-row lg:gap-48 justify-between md:gap-12">
-                                    <label htmlFor="password" className="block text-sm font-medium text-gray-700">
-                                        Password
-                                    </label>
-                                    <div className=" ">
-                                            <span onClick={() => {
-                                                history.push('/forgotPassword')
-                                            }}
-                                                  className="text-xs text-blue-500 cursor-pointer">
-                                                Forgot your password?
-                                            </span>
+            <main className="-mt- pb-8">
+                <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:max-w-5xl lg:px-8 ">
+                    <h1 className="sr-only">Landing Page</h1>
+                    <div className="grid grid-cols-1 gap-4 items-start lg:grid-cols-2 lg:gap-8">
+                        {/* Left column */}
+                        <div className="grid grid-cols-1 gap-4 -mt-80 pt-8">
+                            <section aria-labelledby="section-1-title">
+                                <span className="block text-4xl text-gray-200">Welcome to </span>{' '}
+                                <span className="block text-4xl text-blue-600 pt-3">My Jobs</span>
+                                <div className="mt-10 sm:flex sm:justify-center lg:justify-start">
+                                    <div className="rounded-md">
+                                        <button
+                                            type="button"
+                                            className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-500 hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                                        >
+                                            Get Started
+                                        </button>
                                     </div>
                                 </div>
-                                <div className="mt-1">
-                                    <input
-                                        placeholder="Enter your password"
-                                        id="password"
-                                        name="password"
-                                        type="password"
-                                        required
-                                        className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                                    />
-                                </div>
-                            </div>
-                            <div className='flex flex-col gap-8 justify-center items-center'>
-                                <button
-                                    type="submit"
-                                    className="w-2xl px-8 mt-4 flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-500 hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                                >
-                                    Log in
-                                </button>
+                            </section>
+                        </div>
 
-                                <div>
-                                    <p>
-                                        New to MyJobs?{" "}
-                                        <span
-                                            onClick={() => {
-                                                history.push('/signUp')
-                                            }}
-                                            className='text-blue-500 cursor-pointer'>Create an account</span>
-                                    </p>
+                        {/* Right column */}
+                        <div className="lg:-mt-64 sm:-mt-48">
+                            <section aria-labelledby="section-2-title">
+                                <div className="lg:h-72 md:h-48 rounded-lg bg-white overflow-hidden shadow h-72 ">
+                                    <img src='home1.jpg' alt="" className="w-full bg-center bg-cover"></img>
                                 </div>
-                            </div>
-                        </form>
-
+                            </section>
+                        </div>
                     </div>
                 </div>
-                {/* /End replace */}
+            </main>
+
+            {/*Why US? >*/}
+            <div className="flex flex-col ">
+                <div className="flex flex-col items-center justify-center">
+                    <div className="max-w-5xl mx-auto">
+                        <div
+                            className="max-w-5xl flex items-center justify-start px-8 lg-px-8 pt-12 text-sm tracking-wide">
+                            <p>Why Us</p>
+                        </div>
+                        <div className="mx-auto py-6 px-4 max-w-5xl sm:px-6 lg:px-8 lg:py-6 flex">
+                            <div className="lg:grid lg:grid-cols-3 lg:gap-8 lg:space-y-0">
+                                <div className="lg:col-span-3">
+                                    <ul
+                                        className="space-y-12 sm:grid sm:grid-cols-3 sm:gap-x-6 sm:gap-y-12 sm:space-y-0 lg:gap-x-8"
+                                    >
+                                        {people.map((person) => (
+                                            <li key={person.name}>
+                                                <div className="space-y-4 bg-white px-6 py-6">
+                                                    <div
+                                                        className="text-lg leading-6 font-medium space-y-1 text-blue-500">
+                                                        <span>{person.name}</span>{' '}
+                                                        <span>{person.name2}</span>
+                                                    </div>
+                                                    <div className="text-sm">
+                                                        <p className="text-gray-500">{person.bio}</p>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                {/*Company List*/}
+                <div className="max-w-4xl">
+                    <div className=" flex flex-col py-6 px-4 sm:px-6 lg:px-8 justify-start">
+                        <p className="text-sm tracking-wide px-8 lg-px-8 pt-12 pl-10">
+                            Companies Who Trust Us
+                        </p>
+
+                        <div className="mt-6 grid grid-cols-2 gap-8 md:grid-cols-6 lg:grid-cols-5">
+                            <div className="col-span-1 flex justify-center md:col-span-2 lg:col-span-1">
+                                <img className="h-12" src="https://tailwindui.com/img/logos/tuple-logo-gray-400.svg"
+                                     alt="Tuple"/>
+                            </div>
+                            <div className="col-span-1 flex justify-center md:col-span-2 lg:col-span-1">
+                                <img className="h-12" src="https://tailwindui.com/img/logos/mirage-logo-gray-400.svg"
+                                     alt="Mirage"/>
+                            </div>
+                            <div className="col-span-1 flex justify-center md:col-span-2 lg:col-span-1">
+                                <img
+                                    className="h-8"
+                                    src="https://tailwindui.com/img/logos/statickit-logo-gray-400.svg"
+                                    alt="StaticKit"
+                                />
+                            </div>
+                            <div className="col-span-1 flex justify-center md:col-span-2 md:col-start-2 lg:col-span-1">
+                                <img
+                                    className="h-8"
+                                    src="https://tailwindui.com/img/logos/transistor-logo-gray-400.svg"
+                                    alt="Transistor"
+                                />
+                            </div>
+                            <div className="col-span-2 flex justify-center md:col-span-2 md:col-start-4 lg:col-span-1">
+                                <img
+                                    className="h-8"
+                                    src="https://tailwindui.com/img/logos/workcation-logo-gray-400.svg"
+                                    alt="Workcation"
+                                />
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     )

@@ -1,94 +1,57 @@
-/*
-This example requires Tailwind CSS v2.0+
+import {Menu, Transition} from "@headlessui/react";
+import {ChevronDownIcon} from "@heroicons/react/outline";
 
-This example requires some changes to your config:
+<div className="hidden lg:block lg:ml-4">
+    <div className="flex items-center">
+        <button
+            type="button"
+            className="flex-shrink-0 rounded-full p-1 text-indigo-200 hover:text-white focus:outline-none"
+        >
+            <span className="sr-only">View notifications</span>
+            <p className="">Post a job</p>
+        </button>
 
-    ```
-  // tailwind.config.js
-  module.exports = {
-    // ...
-    plugins: [
-      // ...
-      require('@tailwindcss/forms'),
-    ],
-  }
-  ```
-    */
+        {/* Profile dropdown */}
+        <Menu as="div" className="ml-3 relative flex-shrink-0">
+            <div className="flex flex-row gap-2 align-center justify-center"
+            >
+                <img className="h-8 w-8 rounded-full cursor-pointer"
+                     src={user.imageUrl} alt=""/>
+                <Menu.Button
+                    className="rounded-full flex text-sm text-white focus:outline-none">
+                    <ChevronDownIcon className="-mr-1 ml-2 h-5 w-5 pt-1"
+                                     aria-hidden="true"/>
+                </Menu.Button>
 
-import {Menu, Popover} from '@headlessui/react'
-import '../styles/landingpage.css'
-
-const people = [
-    {
-        name: 'Get More',
-        name2: 'Visibility',
-        bio:
-            'Ultricies massa malesuada viverra cras lobortis. Tempor orci hac ligula dapibus mauris sit ut eu. ',
-
-    },
-    {
-        name: 'Organize Your',
-        name2: 'Candidates',
-        bio:
-            'Ultricies massa malesuada viverra cras lobortis. Tempor orci hac ligula dapibus mauris sit ut eu. ',
-
-    },
-    {
-        name: 'Verify Their ',
-        name2: 'Abilities',
-        bio: 'Ultricies massa malesuada viverra cras lobortis. Tempor orci hac ligula dapibus mauris sit ut eu. ',
-    },
-
-]
-export default function LandingPage() {
-    return (
-        <div className="min-h-screen bg-gray-100">
-            <Popover as="header" className="pb-24 background h-96">
-                {({open}) => (
-                    <>
-                        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:max-w-7xl lg:px-8">
-                            <div className="relative py-5 flex items-center justify-center lg:justify-between">
-                                {/* Logo */}
-                                <div className="absolute left-0 flex-shrink-0 lg:static">
-                                    <span
-                                        className="text-2xl font-bold block xl:inline text-white tracking-wide ">My</span>
-                                    <span
-                                        className="text-2xl font-bold block text-blue-500 xl:inline tracking-wide">Jobs</span>
-                                </div>
-
-                                {/* Right section on desktop */}
-                                <div className="hidden lg:ml-4 lg:flex lg:items-center lg:pr-0.5">
-                                    {/* Profile dropdown */}
-                                    <Menu as="div" className="ml-4 relative flex-shrink-0">
-                                        <button
-                                            type="button"
-                                            className=" tracking-wide inline-flex items-center px-4 py-2 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-blue-300 bg-opacity-10 focus:outline-none border border-blue-600"
-                                        >
-                                            Login/Signup
-                                        </button>
-                                    </Menu>
-                                </div>
-                            </div>
-                            <div className="hidden lg:block border-t border-white border-opacity-20 py-5"></div>
-                        </div>
-                    </>
-                )}
-            </Popover>
-
-            <main className="-mt-24 pb-8">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:max-w-xl lg:px-8 ">
-                    <div className="">
-                        <div className="-mt-40">
-                            <section aria-labelledby="section-2-title">
-                                <div className="rounded-lg bg-white overflow-hidden shadow h-72">
-
-                                </div>
-                            </section>
-                        </div>
-                    </div>
-                </div>
-            </main>
-        </div>
-
-    )
-}
+            </div>
+            <Transition
+                as={Fragment}
+                enter="transition ease-out duration-100"
+                enterFrom="transform opacity-0 scale-95"
+                enterTo="transform opacity-100 scale-100"
+                leave="transition ease-in duration-75"
+                leaveFrom="transform opacity-100 scale-100"
+                leaveTo="transform opacity-0 scale-95"
+            >
+                <Menu.Items
+                    className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
+                    {userNavigation.map((item) => (
+                        <Menu.Item key={item.name}>
+                            {({active}) => (
+                                <a
+                                    href={item.href}
+                                    className={classNames(
+                                        active ? 'bg-gray-100' : '',
+                                        'block py-2 px-4 text-sm text-gray-700'
+                                    )}
+                                >
+                                    {item.name}
+                                </a>
+                            )}
+                        </Menu.Item>
+                    ))}
+                </Menu.Items>
+            </Transition>
+        </Menu>
+    </div>
+</div>
