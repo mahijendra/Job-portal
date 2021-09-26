@@ -25,13 +25,7 @@ function App() {
                 <Route exact path="/recruiterHome" component={RecruiterHome}></Route>
                 <div className="App">
                     <Hero />
-                    {/*<RecruiterHome />
-                    <Application />*/}
-                    {/* <PostJobForm />*/}
-                    {/*<SignUp/>*/}
-                   {/* <Login />*/}
-                    {/*   <Test />*/}
-                    {/*<CandidateHome />*/}
+
                 </div>
             </Switch>
         </Router>
