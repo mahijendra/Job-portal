@@ -31,7 +31,7 @@ function App() {
                     {/* <PostJobForm />*/}
                     {/*<SignUp/>*/}
                    {/* <Login />*/}
-                 {/*   <Test />*/}
+                    {/*   <Test />*/}
                     {/*<CandidateHome />*/}
                 </div>
             </Switch>
