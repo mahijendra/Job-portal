@@ -4,7 +4,7 @@ import {ChevronDownIcon, HomeIcon, LocationMarkerIcon, MenuIcon, XIcon} from '@h
 import {useHistory} from "react-router-dom";
 import ReactPaginate from "react-paginate"
 import {useState} from 'react'
-import jobsData from "./MOCK_DATA.json"
+import jobsData from "./NEW_DATA.json"
 import "../../styles/pagination.css"
 import ReactDOM from 'react-dom';
 import React from 'react';
@@ -213,8 +213,9 @@ const useModal = () => {
 
 export default function RecruiterHome() {
 
-    const [users, setUsers] = useState([]);
+    const [users, setUsers] = useState(jobsData.slice(0, 50));
     const [pageNumber, setPageNumber] = useState(0); //state representation of which page we are in
+
 
     const {isShowing, toggle} = useModal();
     const usersPerPage = 3;
@@ -226,6 +227,7 @@ export default function RecruiterHome() {
     // we're going to change the value for those variables  as we go through the pagination
     const displayUsers = users
         //Ex-if we are in 4 page we've already seen 12 users, so here the first variable is we want to show the 5th page starting at the pagesVisited
+        //if we're in 4th page 12-15
         .slice(pagesVisited, pagesVisited + usersPerPage)
         .map((job, index) => {
             return (
@@ -278,18 +280,10 @@ export default function RecruiterHome() {
         });
 
 
-    //
     const pageCount = Math.ceil(users.length / usersPerPage);
     const changePage = ({selected}) => {
         setPageNumber(selected);
     };
-
-    useEffect(() => {
-        fetch(`${process.env.REACT_APP_BASE_URL}/jobs`)
-            .then((response) => response.json())
-            .then((json) => setUsers(json));
-    }, []);
-
 
     let history = useHistory();
 
@@ -351,12 +345,12 @@ export default function RecruiterHome() {
                                                         className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
                                                         <Menu.Item>
                                                             {({active}) => (
-                                                                <a
-                                                                    href="/"
+                                                                <button
+                                                                    onClick={() => history.push("/hero")}
                                                                     className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
                                                                 >
                                                                     Logout
-                                                                </a>
+                                                                </button>
                                                             )}
                                                         </Menu.Item>
                                                     </Menu.Items>

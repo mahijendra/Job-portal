@@ -4,7 +4,7 @@ import {ChevronDownIcon, HomeIcon, LocationMarkerIcon, MenuIcon, XIcon} from '@h
 import {useHistory} from "react-router-dom";
 import ReactPaginate from "react-paginate"
 import {useState} from 'react'
-import jobsData from "./MOCK_DATA.json"
+import jobsData from "./NEW_DATA.json"
 import "../../styles/pagination.css"
 import ReactDOM from 'react-dom';
 import React from 'react';
@@ -230,7 +230,7 @@ export default function RecruiterHome() {
                         <div className="w-full flex items-center justify-between p-6 space-x-6">
                             <div className="flex-1 truncate">
                                 <div className="flex items-center space-x-3">
-                                    <h3 className="text-gray-900 text-lg font-medium truncate">{job.jobTitle}</h3>
+                                    <h3 className="text-gray-900 text-lg font-medium truncate">{job.title}</h3>
                                 </div>
                                 <p className="mt-1 text-gray-500 text-sm truncate">{job.description}</p>
                             </div>
@@ -343,12 +343,12 @@ export default function RecruiterHome() {
                                                         className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
                                                         <Menu.Item>
                                                             {({active}) => (
-                                                                <a
-                                                                    href="/"
+                                                                <button
+                                                                    onClick={()=> history.push("/hero")}
                                                                     className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
                                                                 >
                                                                     Logout
-                                                                </a>
+                                                                </button>
                                                             )}
                                                         </Menu.Item>
                                                     </Menu.Items>

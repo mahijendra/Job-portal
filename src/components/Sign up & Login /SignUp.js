@@ -173,7 +173,7 @@ export default function SignUp() {
                     <div className=" rounded-lg h-80">
                         <div className="flex flex-col gap-4 mb-5">
                             <div className="text-md tracking-wide p-0">
-                                SignUp as {active}
+                                SignUp as <span className="font-open-sans font-extrabold text-green-900">{active}</span>
                             </div>
                             <div className="flex flex-row gap-4">
                                 <div>

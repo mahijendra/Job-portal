@@ -107,12 +107,12 @@ export default function PostJobForm() {
                                                         className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
                                                         <Menu.Item>
                                                             {({active}) => (
-                                                                <a
-                                                                    href="/"
+                                                                <button
+                                                                    onClick={()=> history.push("/hero")}
                                                                     className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
                                                                 >
                                                                     Logout
-                                                                </a>
+                                                                </button>
                                                             )}
                                                         </Menu.Item>
                                                     </Menu.Items>
@@ -245,6 +245,7 @@ export default function PostJobForm() {
 
                                                 <div className="pl-2 px-2">
                                                     <button
+                                                        onClick={()=> history.push("/hero")}
                                                         className="tracking-wide inline-flex items-center px-4 py-2 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-blue-300 bg-opacity-10 focus:outline-none border border-blue-600"
                                                     >
                                                         Logout

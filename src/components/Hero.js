@@ -163,6 +163,7 @@ export default function Example() {
                                 <div className="mt-10 sm:flex sm:justify-center lg:justify-start">
                                     <div className="rounded-md">
                                         <button
+                                            onClick={() => history.push("/signUp")}
                                             type="button"
                                             className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-500 hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                                         >
@@ -186,7 +187,7 @@ export default function Example() {
             </main>
 
             {/*Why US? >*/}
-            <div className="flex flex-col ">
+            <div className="flex flex-col items-center">
                 <div className="flex flex-col items-center justify-center">
                     <div className="max-w-5xl mx-auto">
                         <div
