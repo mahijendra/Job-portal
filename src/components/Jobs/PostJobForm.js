@@ -1,7 +1,10 @@
 import {Fragment} from 'react'
 import {Menu, Popover, Transition} from '@headlessui/react'
-import {ChevronDownIcon, PencilAltIcon, MenuIcon, XIcon, HomeIcon, ChevronRightIcon} from '@heroicons/react/outline'
+import {ChevronDownIcon, MenuIcon, XIcon, HomeIcon, ChevronRightIcon} from '@heroicons/react/outline'
 import {useHistory} from "react-router-dom";
+import * as yup from "yup";
+import {useForm} from "react-hook-form";
+import {yupResolver} from "@hookform/resolvers/yup";
 
 const user = {
     imageUrl:
@@ -9,16 +12,41 @@ const user = {
 }
 
 const pages = [
-    { name: 'Post Job', href: '#', current: false },
-    { name: '', href: '#', current: false },
+    {name: 'Post Job', href: '#', current: false},
+    {name: '', href: '#', current: false},
 ]
 
+const schema = yup.object().shape({
+    jobTitle: yup.string().email().required(),
+    description: yup.string().min(6).required(),
+    location: yup.string().required(),
+})
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
 }
 
-export default function PostJob() {
+export default function PostJobForm() {
+
+    const {register, handleSubmit, formState: {errors}} = useForm({
+        //connecting the yup to react hooks form
+        resolver: yupResolver(schema)
+    });
+
+    async function submitForm(data) {
+        let result = await fetch(`${process.env.REACT_APP_BASE_URL}/jobs/`, {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            },
+            body: JSON.stringify(data)
+        })
+        result = await result.json();
+        localStorage.setItem("user-info", JSON.stringify(result))
+        history.push("/jobsHome")
+    }
+
     let history = useHistory();
 
     return (
@@ -58,9 +86,11 @@ export default function PostJob() {
                                                 >
                                                     <img className="h-8 w-8 rounded-full cursor-pointer"
                                                          src={user.imageUrl} alt=""/>
-                                                    <Menu.Button className="flex text-sm rounded-full focus:outline-none">
+                                                    <Menu.Button
+                                                        className="flex text-sm rounded-full focus:outline-none">
                                                         <span className="sr-only">Open user menu</span>
-                                                        <ChevronDownIcon className="-mr-1 ml-2 h-5 w-5 pt-1" aria-hidden="true"/>
+                                                        <ChevronDownIcon className="-mr-1 ml-2 h-5 w-5 pt-1"
+                                                                         aria-hidden="true"/>
                                                     </Menu.Button>
 
                                                 </div>
@@ -73,9 +103,10 @@ export default function PostJob() {
                                                     leaveFrom="transform opacity-100 scale-100"
                                                     leaveTo="transform opacity-0 scale-95"
                                                 >
-                                                    <Menu.Items className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
+                                                    <Menu.Items
+                                                        className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
                                                         <Menu.Item>
-                                                            {({ active }) => (
+                                                            {({active}) => (
                                                                 <a
                                                                     href="/"
                                                                     className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
@@ -105,11 +136,43 @@ export default function PostJob() {
                                     </Popover.Button>
                                 </div>
                             </div>
-                            <div className="hidden lg:block border-t border-white border-opacity-20 py-5">
+                            <div
+                                className="hidden lg:block border-t border-white border-opacity-20 py-5 flex flex-col items-start">
                                 <div className="grid grid-cols-3 gap-8 items-center">
                                     <div>
                                     </div>
                                 </div>
+                                <header className="py-8 lg:px-96 ">
+                                    <nav className="flex" aria-label="Breadcrumb">
+                                        <ol className="flex items-center space-x-4">
+                                            <li>
+                                                <div>
+                                                    <a href="/" className="text-gray-400 hover:text-gray-500">
+                                                        <HomeIcon onClick={() => history.push("/postJob")}
+                                                                  className="flex-shrink-0 h-5 w-5" aria-hidden="true"/>
+                                                        <span className="sr-only">Home</span>
+                                                    </a>
+                                                </div>
+                                            </li>
+                                            {pages.map((page) => (
+                                                <li key={page.name}>
+                                                    <div className="flex items-center">
+                                                        <ChevronRightIcon
+                                                            className="flex-shrink-0 h-5 w-5 text-gray-400"
+                                                            aria-hidden="true"/>
+                                                        <a
+                                                            href={page.href}
+                                                            className="ml-4 text-sm font-medium text-gray-500 hover:text-gray-700"
+                                                            aria-current={page.current ? 'page' : undefined}
+                                                        >
+                                                            {page.name}
+                                                        </a>
+                                                    </div>
+                                                </li>
+                                            ))}
+                                        </ol>
+                                    </nav>
+                                </header>
                             </div>
                         </div>
 
@@ -193,41 +256,13 @@ export default function PostJob() {
                                 </Transition.Child>
                             </div>
                         </Transition.Root>
-
-                        <header className="py-8 px-28">
-                            <nav className="flex" aria-label="Breadcrumb">
-                                <ol role="list" className="flex items-center space-x-4">
-                                    <li>
-                                        <div>
-                                            <a href="#" className="text-gray-400 hover:text-gray-500">
-                                                <HomeIcon className="flex-shrink-0 h-5 w-5" aria-hidden="true" />
-                                                <span className="sr-only">Home</span>
-                                            </a>
-                                        </div>
-                                    </li>
-                                    {pages.map((page) => (
-                                        <li key={page.name}>
-                                            <div className="flex items-center">
-                                                <ChevronRightIcon className="flex-shrink-0 h-5 w-5 text-gray-400" aria-hidden="true" />
-                                                <a
-                                                    href={page.href}
-                                                    className="ml-4 text-sm font-medium text-gray-500 hover:text-gray-700"
-                                                    aria-current={page.current ? 'page' : undefined}
-                                                >
-                                                    {page.name}
-                                                </a>
-                                            </div>
-                                        </li>
-                                    ))}
-                                </ol>
-                            </nav>
-                        </header>
-
-                        <div className="flex justify-center items-center sm:mx-auto max-w-xl px-4 sm:px-6 lg:px-8 font-open-sans">
+                        <div
+                            className="flex justify-center items-center sm:mx-auto max-w-xl px-4 sm:px-6 lg:px-8 font-open-sans">
                             {/* Replace with your content */}
-                            <div className="bg-white rounded-lg shadow px-5 py-6 sm:px-6 sm:mx-auto sm:w-full sm:max-w-md">
+                            <div
+                                className="bg-white rounded-lg shadow px-5 py-6 sm:px-6 sm:mx-auto sm:w-full sm:max-w-md">
                                 <div className="rounded-lg h-80">
-                                    <form className="space-y-6" action="#" method="POST">
+                                    <form className="space-y-6" onSubmit={handleSubmit(submitForm)}>
                                         <div className="text-md tracking-wide p-0">
                                             Post a Job
                                         </div>
@@ -237,27 +272,30 @@ export default function PostJob() {
                                             </label>
                                             <div className="mt-1">
                                                 <input
+                                                    {...register('jobTitle' )}
                                                     placeholder="Enter job title"
                                                     id="title"
-                                                    name="title"
+                                                    name="jobTitle"
                                                     type="text"
-                                                    required
                                                     className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                                                 />
+                                                <p className="text-sm text-red-600">{errors.jobTitle?.message}</p>
                                             </div>
                                         </div>
 
                                         <div>
                                             <div className="flex flex-row gap-60">
-                                                <label htmlFor="description"
+                                                <label  htmlFor="description"
                                                        className="block text-sm font-medium text-gray-700">
                                                     Description*
                                                 </label>
                                             </div>
                                             <div className="mt-1">
-                                        <textarea className="w-full shadow-inner p-4 border-0" placeholder="Description"
+                                        <textarea {...register('description')} name="description" className="w-full shadow-inner p-4 border-0"
+                                                  placeholder="Description"
                                                   rows="4"></textarea>
                                             </div>
+                                            <p className="text-sm text-red-600">{errors.description?.message}</p>
                                         </div>
 
                                         <div>
@@ -269,13 +307,13 @@ export default function PostJob() {
                                             </div>
                                             <div className="mt-1">
                                                 <input
+                                                    {...register('location')}
                                                     placeholder="Enter Location"
-                                                    id="location"
                                                     name="location"
                                                     type="text"
-                                                    required
                                                     className="h-12 appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                                                 />
+                                                <p className="text-sm text-red-600">{errors.location?.message}</p>
                                             </div>
                                         </div>
                                         <div className='flex flex-col gap-8 justify-center items-center'>

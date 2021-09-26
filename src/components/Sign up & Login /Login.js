@@ -2,10 +2,42 @@ import {Fragment} from 'react'
 import {Popover, Transition} from '@headlessui/react'
 import {MenuIcon, XIcon} from '@heroicons/react/outline'
 import {useHistory} from "react-router-dom";
+import * as yup from "yup";
+import {useForm} from "react-hook-form"
+import {yupResolver} from "@hookform/resolvers/yup"
+import {useState} from "react";
 
+const submitForm = (data) => {
+    console.log(data)
+}
+
+//defining schema, schema is the object of the shape
+const schema = yup.object().shape({
+    email: yup.string().email().required(),
+    password: yup.string().min(6).required(),
+})
 
 export default function Login() {
+    const {register, handleSubmit,  formState: {errors}} = useForm({
+        //connecting the yup to react hooks form
+        resolver: yupResolver(schema)
+    });
+
     let history = useHistory();
+
+    async function submitForm(data) {
+        let result = await fetch(`${process.env.REACT_APP_BASE_URL}/auth/login`, {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            },
+            body: JSON.stringify(data)
+        })
+        result = await result.json();
+        localStorage.setItem("user-info", JSON.stringify(result))
+        history.push("/postJob")
+    }
 
     return (
         <div className="min-h-screen bg-gray-100">
@@ -13,7 +45,8 @@ export default function Login() {
                 {({open}) => (
                     <>
                         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:max-w-7xl lg:px-8">
-                            <div className="relative py-5 flex items-center justify-center lg:justify-between cursor-pointer">
+                            <div
+                                className="relative py-5 flex items-center justify-center lg:justify-between cursor-pointer">
                                 {/* Logo */}
                                 <div
                                     onClick={() => {
@@ -129,33 +162,34 @@ export default function Login() {
                 )}
             </Popover>
 
-            <div className="-mt-40 flex justify-center items-center sm:mx-auto max-w-xl px-4 sm:px-6 lg:px-8 font-open-sans">
+            <div
+                className="-mt-40 flex justify-center items-center sm:mx-auto max-w-xl px-4 sm:px-6 lg:px-8 font-open-sans">
                 {/* Replace with your content */}
                 <div className="bg-white rounded-lg shadow px-5 py-6 sm:px-6 sm:mx-auto sm:w-full sm:max-w-md">
                     <div className=" rounded-lg h-80">
-                        <form className="space-y-6" action="#" method="POST">
+                        <form className="space-y-6" onSubmit={handleSubmit(submitForm)}>
                             <div className="text-md tracking-wide p-0">
                                 Login
                             </div>
                             <div>
-                                <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                                <label htmlFor="email" className="block text-sm font-light text-gray-700">
                                     Email address
                                 </label>
                                 <div className="mt-1">
                                     <input
+                                        {...register('email', )}
                                         placeholder="Enter your Email"
-                                        id="email"
                                         name="email"
                                         type="email"
-                                        required
                                         className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                                     />
                                 </div>
+                                <p className="text-sm text-red-600">{errors.email?.message}</p>
                             </div>
 
                             <div>
                                 <div className="flex flex-row lg:gap-48 justify-between md:gap-12">
-                                    <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+                                    <label htmlFor="password" className="block text-sm font-light text-gray-700">
                                         Password
                                     </label>
                                     <div className=" ">
@@ -169,25 +203,26 @@ export default function Login() {
                                 </div>
                                 <div className="mt-1">
                                     <input
+                                        {...register("password")}
                                         placeholder="Enter your password"
-                                        id="password"
                                         name="password"
                                         type="password"
-                                        required
                                         className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                                     />
                                 </div>
+                                <p className="text-sm text-red-600">{errors.password?.message}</p>
                             </div>
                             <div className='flex flex-col gap-8 justify-center items-center'>
                                 <button
+                                    onClick={() => history.push("/candidateHome")}
                                     type="submit"
-                                    className="w-2xl px-8 mt-4 flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-500 hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                                    className="w-2xl px-8 mt-4 flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-500 hover:bg-blue-500"
                                 >
                                     Log in
                                 </button>
 
                                 <div>
-                                    <p>
+                                    <p className="font-light tracking-wide">
                                         New to MyJobs?{" "}
                                         <span
                                             onClick={() => {

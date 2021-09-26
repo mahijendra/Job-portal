@@ -5,10 +5,10 @@ import ForgotPassword from "./components/Sign up & Login /ForgotPassword";
 import PostJobForm from "./components/Jobs/PostJobForm"
 import Hero from "./components/Hero"
 import ResetPassword from "./components/Sign up & Login /ResetPassword"
-import NavBar from "./components/Navbar"
-import Application from "./components/Jobs/Applications"
-import JobsHome from "./components/Jobs/JobsHome"
+import RecruiterHome from "./components/Jobs/RecruiterHome"
 import PostJob from "./components/Jobs/PostJob";
+import CandidateHome from "./components/Jobs/CandidateHome"
+import Test from "./components/Jobs/test"
 
 
 function App() {
@@ -20,11 +20,17 @@ function App() {
                 <Route exact path="/signUp" component={SignUp}></Route>
                 <Route exact path="/forgotPassword" component={ForgotPassword}></Route>
                 <Route exact path="/postJobForm" component={PostJobForm}></Route>
+                <Route exact path="/postJob" component={PostJob}></Route>
+                <Route exact path="/candidateHome" component={CandidateHome}></Route>
+                <Route exact path="/recruiterHome" component={RecruiterHome}></Route>
                 <div className="App">
                     {/*<Hero />*/}
-                  {/*  <Application />*/}
-                    <JobsHome />
-                   {/* <PostJobForm />*/}
+                    {/*<RecruiterHome />
+                    <Application />*/}
+                    {/* <PostJobForm />*/}
+                   {/* <SignUp/>*/}
+                    {/*<Login />*/}
+                    <Test />
                 </div>
             </Switch>
         </Router>

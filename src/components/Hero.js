@@ -1,6 +1,6 @@
 import {Fragment} from 'react'
-import {Menu, Popover, Transition} from '@headlessui/react'
-import {BellIcon, MenuIcon, XIcon} from '@heroicons/react/outline'
+import {Popover, Transition} from '@headlessui/react'
+import { MenuIcon, XIcon} from '@heroicons/react/outline'
 import {useHistory} from "react-router-dom";
 
 const people = [

@@ -17,8 +17,8 @@ const useModal = () => {
 
 const Modal = ({isShowing, hide}) => isShowing ? ReactDOM.createPortal(
     <React.Fragment>
-        <div className='flex items-center justify-center bg-gray-500 bg-opacity-75 transition-opacity min-h-screen '>
-            <div className="modal-wrapper max-w-7xl h-xl flex flex-col gap-8 items-end  border border-2 bg-gray-100 border rounded-lg"
+        <div className='flex items-center justify-center bg-gray-400 bg-opacity-75 transition-opacity min-h-screen '>
+            <div className="modal-wrapper max-w-7xl h-xl flex flex-col gap-8 items-end  border border-2 bg-white border rounded-lg"
                  aria-modal aria-hidden tabIndex={-1} role="dialog">
                 <div className="modal w-full flex flex-row items-center justify-between px-4">
                     <div className="pt-4">
@@ -49,7 +49,7 @@ const Modal = ({isShowing, hide}) => isShowing ? ReactDOM.createPortal(
                                     <img className="h-10 w-10 rounded-full" src={person.imageUrl} alt=""/>
                                 </div>
                                 <div className="flex-1 min-w-0">
-                                    <a href="#" className="focus:outline-none">
+                                    <a href="/" className="focus:outline-none">
                                         <span className="absolute inset-0" aria-hidden="true"/>
                                         <p className="text-sm font-medium text-gray-900">{person.name}</p>
                                         <p className="text-sm text-gray-500 truncate">{person.email}</p>
