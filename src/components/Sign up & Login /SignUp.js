@@ -6,8 +6,6 @@ import {useForm} from "react-hook-form"
 import {yupResolver} from "@hookform/resolvers/yup"
 import * as yup from "yup"
 import {useState} from "react";
-import RecruiterForm from "../Jobs/RecruiterForm";
-import CandidateForm from "../Jobs/CandidateForm";
 
 
 //defining schema, schema is the object of the shape
@@ -21,12 +19,14 @@ const schema = yup.object().shape({
 
 export default function SignUp() {
 
-    const [active, setActive] = useState()
 
-    const recruiterForm = () => setActive("Recruiter")
-    const candidateForm = () => setActive("Candidate")
+    const {register, handleSubmit, formState: {errors}} = useForm({
+        //connecting the yup to react hooks form
+        resolver: yupResolver(schema)
+    });
 
     let history = useHistory();
+
 
     async function submitForm(data) {
         let result = await fetch(`${process.env.REACT_APP_BASE_URL}/auth/register`, {
@@ -40,7 +40,7 @@ export default function SignUp() {
 
         result = await result.json();
         localStorage.setItem("user-info", JSON.stringify(result))
-        /*localStorage.setItem("token", result.data.token)*/
+        localStorage.setItem("token", result.data.token)
         history.push("/postJob")
     }
 
@@ -171,16 +171,17 @@ export default function SignUp() {
                 {/* Replace with your content */}
                 <div className="bg-white rounded-lg shadow px-5 py-6 sm:px-6 sm:mx-auto sm:w-full sm:max-w-md">
                     <div className=" rounded-lg h-80">
-                        <div className="flex flex-col gap-4 mb-5">
+                        <form className="flex flex-col gap-3 space-y-3"
+                              onSubmit={handleSubmit(submitForm)}>
                             <div className="text-md tracking-wide p-0">
-                                SignUp as <span className="font-open-sans font-extrabold text-green-900">{active}</span>
+                                SignUp
                             </div>
+                            {/*Recruiter and Candidate buttons*/}
                             <div className="flex flex-row gap-4">
                                 <div>
                                     <button
-                                        onClick={()=>setActive(recruiterForm)}
                                         type="button"
-                                        className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 flex align-center justify-center gap-2"
+                                        className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 flex align-center justify-center gap-2"
                                     >
                                         <img src="research.png" alt='' className='h-5 w-5 pt-1'/>
                                         Recruiter
@@ -189,26 +190,142 @@ export default function SignUp() {
 
                                 <div>
                                     <button
-                                        onClick={()=> setActive(candidateForm)}
                                         type="button"
-                                        className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 flex align-center justify-center gap-2"
+                                        className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 flex align-center justify-center gap-2"
                                     >
                                         <img src="cv.png" alt='' className='h-5 w-5 pt-1'/>
                                         Candidate
                                     </button>
                                 </div>
                             </div>
-                        </div>
+                            <div>
+                                {/*Name*/}
+                                <label htmlFor="email" className="block text-sm font-light text-gray-700">
+                                    Name*
+                                </label>
+                                <div className="mt-2">
+                                    <input
+                                        /*value={name}
+                                        onChange={(e) => setName(e.target.value)}*/
+                                        {...register('name', {required: true})}
+                                        placeholder="Enter your Name"
+                                        name="name"
+                                        type="text"
+                                        autoComplete="name"
 
-                        {/*Form Starts*/}
+                                        className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                                    />
+                                    <p className="text-sm text-red-600">{errors.name?.message}</p>
+                                </div>
 
-                        <>
-                            {active && <RecruiterForm /> }
-                        </>
+                                {/*Email*/}
+                                <label htmlFor="email" className="block text-sm font-light text-gray-700 pt-6">
+                                    Email address*
+                                </label>
+                                <div className="mt-2">
+                                    <input
+                                        /*value={email}
+                                        onChange={(e) => setEmail(e.target.value)}*/
+                                        {...register("email")}
+                                        placeholder="Enter your Email Id"
+                                        name="email"
+                                        type="email"
+                                        autoComplete="email"
+                                        className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                                    />
+                                    <p className="text-sm text-red-600">{errors.email?.message}</p>
+                                </div>
+                            </div>
 
-                        <>
-                            {!active && <CandidateForm /> }
-                        </>
+                            {/*Create Password**/}
+                            <div className="flex flex-row gap-4">
+                                <div className='flex flex-col'>
+                                    <div className="flex flex-row gap-60">
+                                        <label htmlFor="password"
+                                               className="block text-sm font-light text-gray-700">
+                                            Create Password*
+                                        </label>
+                                    </div>
+                                    <div className="mt-2">
+                                        <input
+                                            /*value={password}
+                                            onChange={(e) => setPassword(e.target.value)}*/
+                                            {...register("password")}
+                                            placeholder="Enter your password"
+                                            name="password"
+                                            type="password"
+                                            autoComplete="current-password"
+
+                                            className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                                        />
+                                        <p className="text-sm text-red-600">{errors.password?.message}</p>
+
+                                    </div>
+                                </div>
+                                {/*Confirm Password*/}
+                                <div className="flex flex-col">
+                                    <div className="flex flex-row gap-60">
+                                        <label htmlFor="password"
+                                               className="block text-sm font-light text-gray-700">
+                                            Confirm Password*
+                                        </label>
+                                    </div>
+                                    <div className="mt-2">
+                                        <input
+                                            /* value={confirmPassword}
+                                             onChange={(e) => setConfirmPassword(e.target.value)}*/
+                                            {...register("confirmPassword")}
+                                            placeholder="Enter your password"
+                                            name="confirmPassword"
+                                            type="password"
+                                            autoComplete="current-password"
+
+                                            className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                                        />
+
+                                        <p className="text-sm text-red-600">{errors.confirmPassword && "Passwords should match!"}</p>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/*Skills*/}
+                            <div>
+                                <label htmlFor="text" className="block text-sm font-light text-gray-700">
+                                    Skills
+                                </label>
+                                <div className="mt-2">
+                                    <input
+                                        /* value={skills}
+                                         onChange={(e) => setSkills(e.target.value)}*/
+                                        {...register("skills")}
+                                        placeholder="Enter comma seperated skills"
+                                        name="skills"
+                                        type="text"
+                                        className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                                    />
+                                    <p className="text-sm text-red-600">{errors.skills?.message}</p>
+
+                                </div>
+                            </div>
+
+                            {/*LogIn*/}
+                            <div className='flex flex-col gap-4 justify-center items-center'>
+                                <button
+                                    type="submit"
+                                    className="w-2xl px-8 mt-4 flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-500 hover:bg-blue-500 focus:outline-none"
+                                >
+                                    Sign Up
+                                </button>
+
+                                <div onClick={() => history.push("/login")}>
+                                    <p>
+                                        Have an account? {" "}
+                                        <span className='text-blue-500 cursor-pointer'>Login</span>
+                                    </p>
+                                </div>
+                            </div>
+                        </form>
 
                     </div>
                 </div>
