@@ -2,26 +2,15 @@ import {Fragment, useEffect} from 'react'
 import {Menu, Popover, Transition} from '@headlessui/react'
 import {ChevronDownIcon, HomeIcon, LocationMarkerIcon, MenuIcon, XIcon} from '@heroicons/react/outline'
 import {useHistory} from "react-router-dom";
-import ReactPaginate from "react-paginate"
 import {useState} from 'react'
 import jobsData from "./MOCK_DATA.json"
 import "../../styles/pagination.css"
-import ReactDOM from 'react-dom';
 import React from 'react';
-import PostWrapper from "./PostWrapper"
-import axios from "axios";
-
 
 const user = {
     imageUrl:
         'https://dummyimage.com/100x100.png/5fa2dd/ffffff',
 }
-
-
-function classNames(...classes) {
-    return classes.filter(Boolean).join(' ')
-}
-
 
 /*const applicants = [
     {
@@ -202,7 +191,11 @@ const people = [
     },
 ]*/
 
-/*const useModal = () => {
+function classNames(...classes) {
+    return classes.filter(Boolean).join(' ')
+}
+
+const useModal = () => {
     const [isShowing, setIsShowing] = useState(false);
 
     function toggle() {
@@ -213,39 +206,173 @@ const people = [
         isShowing,
         toggle,
     }
+};
+
+
+/*const renderData = (data) => {
+    return (
+        <>
+            { data.map((job, index) => {
+                return (
+                    <li key={index}
+                        className="col-span-1 bg-white rounded-lg shadow flex flex-col">
+                        <div className="w-full flex items-center justify-between p-6 space-x-6">
+                            <div className="flex-1 truncate">
+                                <div className="flex items-center space-x-3">
+                                    <h3 className="text-gray-900 text-lg font-medium truncate">{job.title}</h3>
+                                </div>
+                                <p className="mt-1 text-gray-500 text-sm truncate">{job.description}</p>
+                            </div>
+                        </div>
+
+                        <div className="flex flex-row justify-between items-center lg:gap-x-12">
+                            <div className="w-xl flex mx-14">
+                                <a
+                                    href="/"
+                                    className="relative w-0 flex-1 inline-flex items-center justify-center py-4 text-sm text-gray-700 font-medium border border-transparent rounded-bl-lg hover:text-gray-500"
+                                >
+                                    <LocationMarkerIcon
+                                        className="w-5 h-5 text-gray-400 flex-shrink-0 text-gray-400 mr-1"
+                                        aria-hidden="true"/>
+                                    <span className="">{job.location}</span>
+                                </a>
+                            </div>
+                            <div className=" w-0 flex-1 flex">
+                                <a
+                                    href="/"
+                                    className="relative w-0 flex-1 inline-flex items-center justify-center py-4 text-sm text-gray-700 font-medium border border-transparent rounded-br-lg hover:text-gray-500"
+                                >
+                                    <div
+                                        className='flex flex-col justify-center items-center'>
+                                        <button
+
+                                            type="submit"
+                                            className="w-2xl px-2 flex justify-center py-2 px-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-500 hover:bg-blue-500 focus:outline-none"
+                                        >
+                                            View Application
+                                        </button>
+
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </li>
+                );
+            })}
+        </>
+    );
 };*/
+
+
 
 
 export default function RecruiterHome() {
 
-    const [posts, setPosts] = useState([])
-    const [loading, setLoading] = useState(false)
-    const [currentPage, setCurrentPage] = useState(1)
-    const [postsPerPage] = useState(3)
+    const [data, setData] = useState([]);
+    const [currentPage, setcurrentPage] = useState(1);
+    const [itemsPerPage, setitemsPerPage] = useState(3);
 
-    let history = useHistory();
+    const [pageNumberLimit, setpageNumberLimit] = useState(5);
+    const [maxPageNumberLimit, setmaxPageNumberLimit] = useState(5);
+    const [minPageNumberLimit, setminPageNumberLimit] = useState(0);
 
-    useEffect(() => {
-        const fetchPosts = async () => {
-            setLoading(true)
-            const res = await axios.get(`${process.env.REACT_APP_BASE_URL}/jobs`)
-            setPosts(res.data)
-            setLoading(false)
-        }
+    const handleClick = (event) => {
+        setcurrentPage(Number(event.target.id));
+    };
 
-        fetchPosts().then()
-    }, [])
-
-    if (loading && posts.length === 0) {
-        return <h2>Loading...</h2>
+    //array for all the pagenumbers
+    const pages = [];
+    //dividing data.length that is total number of jobs available divided by items per page, so we'll get the the total number of pages we need
+    for (let i = 1; i <= Math.ceil(data.length / itemsPerPage); i++) {
+        pages.push(i);
     }
 
-    const indexOfLastPost = currentPage * postsPerPage;
-    const indexOfFirstPost = indexOfLastPost - postsPerPage;
-    const currentPosts = posts.slice(indexOfFirstPost, indexOfLastPost)
-    const howManyPages = Math.ceil(posts.length/postsPerPage)
+
+    //rendering the pages. Mapping the pages array that will provide us a number for each page
+    const renderPageNumbers = pages.map((number) => {
+        if (number < maxPageNumberLimit + 1 && number > minPageNumberLimit) {
+            return (
+                <li
+                    key={number}
+                    id={number}
+                    onClick={handleClick}
+                    className={currentPage == number ? "active" : null}
+                >
+                    {number}
+                </li>
+            );
+        } else {
+            return null;
+        }
+    });
+
+    const displayUsers = data
+        .map((job, index) => {
+            return (
+                <>
+                    <li key={job.id}
+                        className="col-span-1 bg-white rounded-lg shadow flex flex-col">
+                        <div className="w-full flex items-center justify-between p-6 space-x-6">
+                            <div className="flex-1 truncate">
+                                <div className="flex items-center space-x-3">
+                                    <h3 className="text-gray-900 text-lg font-medium truncate">{job.title}</h3>
+                                </div>
+                                <p className="mt-1 text-gray-500 text-sm truncate">{job.description}</p>
+                            </div>
+                        </div>
+
+                        <div className="flex flex-row justify-between items-center lg:gap-x-12">
+                            <div className="w-xl flex mx-14">
+                                <a
+                                    href="/"
+                                    className="relative w-0 flex-1 inline-flex items-center justify-center py-4 text-sm text-gray-700 font-medium border border-transparent rounded-bl-lg hover:text-gray-500"
+                                >
+                                    <LocationMarkerIcon
+                                        className="w-5 h-5 text-gray-400 flex-shrink-0 text-gray-400 mr-1"
+                                        aria-hidden="true"/>
+                                    <span className="">{job.location}</span>
+                                </a>
+                            </div>
+                            <div className=" w-0 flex-1 flex">
+                                <a
+                                    href="/"
+                                    className="relative w-0 flex-1 inline-flex items-center justify-center py-4 text-sm text-gray-700 font-medium border border-transparent rounded-br-lg hover:text-gray-500"
+                                >
+                                    <div
+                                        className='flex flex-col justify-center items-center'>
+                                        <button
+                                            type="submit"
+                                            className="w-2xl px-2 flex justify-center py-2 px-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-500 hover:bg-blue-500 focus:outline-none"
+                                        >
+                                            View Application
+                                        </button>
+
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </li>
+                </>
+            );
+        });
+
+    useEffect(() => {
+        fetch(`${process.env.REACT_APP_BASE_URL}/jobs`)
+            .then((response) => response.json())
+            .then((json) => setData(json));
+    }, []);
+
+    const handleNextbtn = () => {
+        setcurrentPage(currentPage + 1);
+
+        if (currentPage + 1 > maxPageNumberLimit) {
+            setmaxPageNumberLimit(maxPageNumberLimit + pageNumberLimit);
+            setminPageNumberLimit(minPageNumberLimit + pageNumberLimit);
+        }
+    };
 
 
+    let history = useHistory();
 
     return (
         <div className="min-h-screen bg-gray-100 font-open-sans">
@@ -457,15 +584,22 @@ export default function RecruiterHome() {
                     <div className="rounded-lg px-5 py-6 sm:px-6 ">
                         <div className="h-sm rounded-lg">
                             <ul className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                              {/*Display each user*/}
-                                <PostWrapper />
+                                {displayUsers}
                             </ul>
-
                         </div>
                     </div>
                     {/* /End replace */}
                 </div>
             </main>
+
+
+            {/* <ReactPaginate previousLabel={'<'} nextLabel={'>'} pageCount={pageCount} marginPagesDisplayed={1}
+                           onPageChange={changePage}
+                           containerClassName={"paginationBttns"}
+                           previousLinkClassName={"previousBttn"}
+                           nextLinkClassName={"nextBttn"}
+                           disabledClassName={"paginationDisabled"}
+                           activeClassName={"paginationActive"}/>*/}
         </div>
     )
 }

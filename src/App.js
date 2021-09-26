@@ -29,8 +29,9 @@ function App() {
                     <Application />*/}
                     {/* <PostJobForm />*/}
                    {/* <SignUp/>*/}
-                    {/*<Login />*/}
-                    <Test />
+                    <Login />
+                 {/*   <Test />*/}
+                  {/*  <CandidateHome />*/}
                 </div>
             </Switch>
         </Router>

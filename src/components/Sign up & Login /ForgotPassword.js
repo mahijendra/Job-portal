@@ -22,6 +22,7 @@ import {MenuIcon, XIcon} from "@heroicons/react/outline";
 import {Fragment} from 'react'
 
 
+
 export default function LandingPage() {
     let history = useHistory();
     return (

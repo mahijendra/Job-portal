@@ -213,35 +213,29 @@ const useModal = () => {
 
 export default function RecruiterHome() {
 
-    const [users, setUsers] = useState(jobsData.slice(0, 50));
-    const [pageNumber, setPageNumber] = useState(0);
-
-    useEffect(() => {
-        const getData = async () => {
-            const  res = await fetch(`${process.env.REACT_APP_BASE_URL}/jobs`);
-            const data = await res.json()
-            setUsers(data)
-        }
-        getData().then()
-    }, []);
-
-    console.log(users)
+    const [users, setUsers] = useState([]);
+    const [pageNumber, setPageNumber] = useState(0); //state representation of which page we are in
 
     const {isShowing, toggle} = useModal();
     const usersPerPage = 3;
+    // variable to store the pages we visited so far, i.e the currentPageNumber times usersPerPage.
+    // Ex - if we're in page 4, each page has 10 items so we've seen 12 users.
     const pagesVisited = pageNumber * usersPerPage;
 
+    //what we want to display, also slicing the two constantly changing variables,
+    // we're going to change the value for those variables  as we go through the pagination
     const displayUsers = users
+        //Ex-if we are in 4 page we've already seen 12 users, so here the first variable is we want to show the 5th page starting at the pagesVisited
         .slice(pagesVisited, pagesVisited + usersPerPage)
-        .map((job) => {
+        .map((job, index) => {
             return (
                 <>
-                    <li key={job.id}
+                    <li key={index}
                         className="col-span-1 bg-white rounded-lg shadow flex flex-col">
                         <div className="w-full flex items-center justify-between p-6 space-x-6">
                             <div className="flex-1 truncate">
                                 <div className="flex items-center space-x-3">
-                                    <h3 className="text-gray-900 text-lg font-medium truncate">{job.jobTitle}</h3>
+                                    <h3 className="text-gray-900 text-lg font-medium truncate">{job.title}</h3>
                                 </div>
                                 <p className="mt-1 text-gray-500 text-sm truncate">{job.description}</p>
                             </div>
@@ -283,10 +277,19 @@ export default function RecruiterHome() {
             );
         });
 
+
+    //
     const pageCount = Math.ceil(users.length / usersPerPage);
     const changePage = ({selected}) => {
         setPageNumber(selected);
     };
+
+    useEffect(() => {
+        fetch(`${process.env.REACT_APP_BASE_URL}/jobs`)
+            .then((response) => response.json())
+            .then((json) => setUsers(json));
+    }, []);
+
 
     let history = useHistory();
 
